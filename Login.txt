@@ -1,82 +1,82 @@
-import { Link, useLocation, useNavigate } from "react-router-dom";
-import { useForm } from "react-hook-form";
 import { useContext, useState } from "react";
+import { useForm } from "react-hook-form";
 import { AuthContext } from "../AuthProvider/AuthProvider";
-import SocialLogin from "../SocialLogin/SocialLogin";
-import UseAuth from "../Hooks/UseAuth";
-import { Helmet } from "react-helmet-async";
-import localforage from "localforage";
-import { ToastContainer, toast } from "react-toastify";
-import { FcGoogle } from "react-icons/fc";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import { Helmet } from "react-helmet";
 import { FaEye, FaEyeSlash, FaGithub } from "react-icons/fa";
+import { FcGoogle } from "react-icons/fc";
 
 
 const Login = () => {
-  const [showPasswordA , setShowPassword] = useState(false);
 
-  const { signInUser, googleLogin, githubLogin } = UseAuth();
-  const location = useLocation();
-  const navigate = useNavigate();
-  console.log('location in the login page', location);
+    const [showPasswordA , setShowPassword] = useState(false);
 
-  const {
-    register, handleSubmit, formState: { errors }, } = useForm()
-
-  const onSubmit = (data) => {
-    const { email, password } = data;
-    signInUser(email, password)
-      .then(result => {
-        console.log(result.user);
-        // alert("Login Successful")
-        // alert("Login Successful")
-
-
-        // navigate after user 
-        navigate(location?.state ? location.state : "/")
-        toast.success('Login Success')
-
-      })
-      .catch(error => {
-        console.error(error.message);
-        // alert('')
-        toast.error('Invalid user and password')
-      })
-
-
-
-
-  };
-
-  const handleGoogleLogin = () => {
-    googleLogin()
-      .then(result => {
-        console.log(result.user)
-        toast.success('google login successful')
-        navigate(location?.state ? location.state : "/")
-        
-      })
-      .catch(error => {
-        console.error(error)
-      })
-
-  }
+    const { signInUser, googleLogin, githubLogin } = useContext(AuthContext);
+    const location = useLocation();
+    const navigate = useNavigate();
+    // console.log('location in the login page', location);
+  
+    const {
+      register, handleSubmit, formState: { errors }, } = useForm()
+  
+    const onSubmit = (data) => {
+      const { email, password } = data;
+      signInUser(email, password)
+        .then(result => {
+          console.log(result.user);
+          // alert("Login Successful")
+          // alert("Login Successful")
+  
+  
+          // navigate after user 
+          navigate(location?.state ? location.state : "/")
+          toast.success('Login Success')
+  
+        })
+        .catch(error => {
+          console.error(error.message);
+          // alert('')
+          toast.error('Invalid user and password')
+        })
+  
+  
+  
+  
+    };
 
 
-  const handleGithubLogin = () => {
-    githubLogin()
-      .then(result => {
-        console.log(result.user)
-        toast.success('Github login successful')
-        navigate(location?.state ? location.state : "/")
-      })
-      .catch(error => {
-        console.error(error)
-      })
-  }
+    const handleGoogleLogin = () => {
+        googleLogin()
+          .then(result => {
+            console.log(result.user)
+            toast.success('google login successful')
+            navigate(location?.state ? location.state : "/")
+            
+          })
+          .catch(error => {
+            console.error(error)
+            toast.error('Firebase google Login Problem')
+          })
+    
+      }
 
 
-  return (
-    <div>
+
+      const handleGithubLogin = () => {
+        githubLogin()
+          .then(result => {
+            console.log(result.user)
+            toast.success('Github login successful')
+            navigate(location?.state ? location.state : "/")
+          })
+          .catch(error => {
+            console.error(error)
+          })
+      }
+    return (
+        <div>
+                <div>
       <Helmet><title>Login</title></Helmet>
       <div>
 
@@ -149,7 +149,9 @@ const Login = () => {
 
 
     </div>
-  );
+            
+        </div>
+    );
 };
 
 export default Login;
